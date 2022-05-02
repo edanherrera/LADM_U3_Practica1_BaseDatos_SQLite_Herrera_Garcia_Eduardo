@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    var listaIDs = ArrayList<String>()
+    var listaIDs = ArrayList<Int>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,10 +39,11 @@ class HomeFragment : Fragment() {
             arr.nombre = binding.nombre.text.toString()
             arr.domicilio = binding.domicilio.text.toString()
             arr.licencia = binding.licencia.text.toString()
-            //arr.idAuto = binding.idAuto.text.toString()
+            arr.modelo = binding.modelo.text.toString()
+            arr.marca = binding.marca.text.toString()
 
 
-            val resultado = arr.insertar()
+            val resultado = arr.insertar(arr.marca, arr.modelo)
             if (resultado){
                 Toast.makeText(this.requireContext(),"SE INSERTO CON EXITO", Toast.LENGTH_LONG)
                     .show()
@@ -50,7 +51,8 @@ class HomeFragment : Fragment() {
                 binding.nombre.setText("")
                 binding.domicilio.setText("")
                 binding.licencia.setText("")
-                //binding.idAuto.setText("")
+                binding.marca.setText("")
+                binding.modelo.setText("")
 
             }
 
@@ -77,7 +79,7 @@ class HomeFragment : Fragment() {
 
         binding.lista.setOnItemClickListener { adapterView, view, indice, l ->
             val idArr = listaIDs.get(indice)
-            val arr = Arrendamiento(this.requireContext()).mostrarArr(idArr)
+            val arr = Arrendamiento(this.requireContext()).mostrarArr(idArr.toString())
 
             AlertDialog.Builder(this.requireContext())
                 .setTitle("ATENCIÓN")

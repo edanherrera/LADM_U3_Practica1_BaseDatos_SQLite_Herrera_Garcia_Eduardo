@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteException
 
 class Automovil(este: Context) {
     private val este = este
-    var idAuto = ""
+    var idAuto = 0
     var modelo = ""
     var marca = ""
-    var kilometrage = ""
+    var kilometrage = 0
     private var err = ""
 
     fun insertar() : Boolean{
-        val baseDatos = BaseDatos(este,"aAutomovil",null,1)
+        val baseDatos = BaseDatos(este,"bdaAutomovil",null,1)
         err = ""
         try {
             val tabla = baseDatos.writableDatabase
@@ -37,7 +37,7 @@ class Automovil(este: Context) {
         return true
     }
     fun mostrarTodos() : ArrayList<Automovil>{
-        val baseDatos = BaseDatos(este,"aAutomovil",null,1)
+        val baseDatos = BaseDatos(este,"bdaAutomovil",null,1)
         err = ""
         var arreglo = ArrayList<Automovil>()
         try {
@@ -48,10 +48,10 @@ class Automovil(este: Context) {
             if (cursor.moveToFirst()){
                 do {
                     val automovil = Automovil(este)
-                    automovil.idAuto = cursor.getString(0)
+                    automovil.idAuto = cursor.getInt(0)
                     automovil.modelo = cursor.getString(1)
                     automovil.marca = cursor.getString(2)
-                    automovil.kilometrage = cursor.getString(3)
+                    automovil.kilometrage = cursor.getInt(3)
                     arreglo.add(automovil)
                 }while (cursor.moveToNext())
             }
@@ -65,7 +65,7 @@ class Automovil(este: Context) {
     }
 
     fun mostrarAuto(idAuto:String):Automovil{
-        val baseDatos = BaseDatos(este,"aAutomovil",null,1)
+        val baseDatos = BaseDatos(este,"bdaAutomovil",null,1)
         var resultado =""
         err=""
         val automovil = Automovil(este)
@@ -76,10 +76,10 @@ class Automovil(este: Context) {
             var cursor = tabla.rawQuery(SQLSELECT, arrayOf(idAuto))
             if (cursor.moveToFirst()){
 
-                    automovil.idAuto = cursor.getString(0)
-                    automovil.modelo = cursor.getString(1)
-                    automovil.marca = cursor.getString(2)
-                    automovil.kilometrage = cursor.getString(3)
+                automovil.idAuto = cursor.getInt(0)
+                automovil.modelo = cursor.getString(1)
+                automovil.marca = cursor.getString(2)
+                automovil.kilometrage = cursor.getInt(3)
             }
 
         }catch (err: SQLiteException){
@@ -90,7 +90,7 @@ class Automovil(este: Context) {
         return automovil
     }
     fun actualizar(): Boolean{
-        val baseDatos = BaseDatos(este,"aAutomovil",null,1)
+        val baseDatos = BaseDatos(este,"bdaAutomovil",null,1)
         err = ""
         try {
             var tabla = baseDatos.writableDatabase
@@ -101,7 +101,7 @@ class Automovil(este: Context) {
             datosAcualizados.put("MARCA",marca)
             datosAcualizados.put("KILOMETRAGE",kilometrage)
 
-            val respuesta = tabla.update("AUTOMOVIL",datosAcualizados,"IDAUTO=?", arrayOf(idAuto))
+            val respuesta = tabla.update("AUTOMOVIL",datosAcualizados,"IDAUTO=?", arrayOf(idAuto.toString()))
 
             if(respuesta==0)return false
 
@@ -116,7 +116,7 @@ class Automovil(este: Context) {
     }
 
     fun eliminar(idAutoEliminar : String): Boolean {
-        val baseDatos = BaseDatos(este,"aAutomovil",null,1)
+        val baseDatos = BaseDatos(este,"bdaAutomovil",null,1)
         err = ""
         try {
             var tabla = baseDatos.writableDatabase
@@ -133,11 +133,11 @@ class Automovil(este: Context) {
         }
     }
     fun eliminar() : Boolean {
-        val baseDatos = BaseDatos(este,"aAutomovil",null,1)
+        val baseDatos = BaseDatos(este,"bdaAutomovil",null,1)
         err = ""
         try {
             var tabla = baseDatos.writableDatabase
-            val resultado = tabla.delete("AUTOMOVIL","IDAUTO=?", arrayOf(idAuto))
+            val resultado = tabla.delete("AUTOMOVIL","IDAUTO=?", arrayOf(idAuto.toString()))
 
             if (resultado == 0) return false
 

@@ -21,7 +21,7 @@ class DashboardFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    var listaIDs = ArrayList<String>()
+    var listaIDs = ArrayList<Int>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +37,7 @@ class DashboardFragment : Fragment() {
             val auto = Automovil(this.requireContext())
             auto.modelo = binding.modelo.text.toString()
             auto.marca = binding.marca.text.toString()
-            auto.kilometrage = binding.kilometrage.text.toString()
+            auto.kilometrage = Integer.parseInt(binding.kilometrage.text.toString())
             val resultado = auto.insertar()
             if (resultado){
                 Toast.makeText(this.requireContext(),"SE INSERTO CON EXITO", Toast.LENGTH_LONG)
@@ -69,7 +69,7 @@ class DashboardFragment : Fragment() {
         binding.lista.adapter = ArrayAdapter<String>(this.requireContext(), R.layout.simple_list_item_1,nombreAuto)
         binding.lista.setOnItemClickListener { adapterView, view, indice, l ->
             val idArr = listaIDs.get(indice)
-            val auto = Automovil(this.requireContext()).mostrarAuto(idArr)
+            val auto = Automovil(this.requireContext()).mostrarAuto(idArr.toString())
 
             AlertDialog.Builder(this.requireContext())
                 .setTitle("ATENCIÓN")
